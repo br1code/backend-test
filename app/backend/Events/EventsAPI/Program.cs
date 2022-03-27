@@ -1,4 +1,6 @@
 using EventsAPI.Data;
+using EventsAPI.Services.Contracts;
+using EventsAPI.Services.Implementations;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +11,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IEventsService, EventsService>();
 
 string eventsDbConnectionString = builder.Configuration.GetConnectionString("EventsDbContext");
 builder.Services.AddDbContext<EventsDbContext>(options =>
