@@ -30,6 +30,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// TODO: revisit cors before deployment
+app.UseCors(options => options.AllowAnyOrigin());
 app.UseHttpsRedirection(); // TODO: do I need this?
 
 app.UseAuthorization();

@@ -6,8 +6,8 @@ namespace EventsAPI.Services.Contracts
     {
         Task<EventDetailsResult> GetEvent(int id);
 
-        Task<IEnumerable<EventDateResult>> GetEventDates(bool featured);
+        Task<IEnumerable<EventDateResult>> GetEventDates(bool featured, int pageNumber, int pageSize);
 
-        Task<int> CreateEvent(CreateEvent createEvent);
+        Task<int> CreateEvent(NewEvent createEvent);
     }
 }

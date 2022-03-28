@@ -44,3 +44,23 @@ CREATE TABLE event_dates (
     date timestamp,
     price decimal
 );
+
+
+
+# TODO
+
+## Backend
+- create an endpoint that returns a list of events sorted by date (asc and desc)
+  - when not authenticated
+- create an endpoint that returns a single event
+- create an endpoint that returns a list of featured events
+  - how many events?
+
+
+## Frontend
+- As a site visitor looking at an event I should be able to click the share button:
+  - This button will share the event on twitter with the following text: "I will attend to [Name of the event] @ [Date of the event]"
+  
+- As a visitor of the site, clicking an event should take me to the event detail view. The detail page will show all the event details like dates, location, etc.
+
+- As a visitor of the site on the homepage, I should see a list of featured events on the right of the screen.

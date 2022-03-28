@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EventsAPI.Controllers
 {
-    // TODO: implement MediatR
     [Route("api/[controller]")]
     [ApiController]
     public class EventsController : ControllerBase
@@ -17,7 +16,7 @@ namespace EventsAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<EventDetailsResult>> GetEvent([FromRoute]int id)
+        public async Task<ActionResult<EventDetailsResult>> GetEvent([FromRoute] int id)
         {
             // TODO: add try catch
             var result = await _eventsService.GetEvent(id);
@@ -30,23 +29,33 @@ namespace EventsAPI.Controllers
             return Ok(result);
         }
 
-        // TODO: add simple pagination
+        // TODO: consider creating a class for query params
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<EventDateResult>>> GetEvents([FromQuery] bool featured)
+        public async Task<ActionResult<IEnumerable<EventDateResult>>> GetEvents([FromQuery] bool featured,
+            [FromQuery] int pageNumber, [FromQuery] int pageSize)
         {
             // TODO: add try catch
-            var result = await _eventsService.GetEventDates(featured);
+            var result = await _eventsService.GetEventDates(featured, pageNumber, pageSize);
 
             return Ok(result);
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> CreateEvent([FromBody] CreateEvent createEvent)
+        public async Task<ActionResult<int>> CreateEvent([FromForm] NewEvent createEvent)
         {
             // TODO: add try catch
-            var result = await _eventsService.CreateEvent(createEvent);
+            try
+            {
+                var result = await _eventsService.CreateEvent(createEvent);
 
-            return Ok(result);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                // TODO: ???
+                return BadRequest(ex);
+            }
+
         }
     }
 }

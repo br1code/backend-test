@@ -8,6 +8,8 @@ namespace EventsAPI.Services.Implementations
 {
     public class EventsService : IEventsService
     {
+        private const int MIN_PAGE_NUMBER = 1;
+        private const int MIN_PAGE_SIZE = 5;
         private readonly EventsDbContext _dbContext;
 
         public EventsService(EventsDbContext dbContext)
@@ -15,9 +17,9 @@ namespace EventsAPI.Services.Implementations
             _dbContext = dbContext;
         }
 
-        public async Task<int> CreateEvent(CreateEvent createEvent)
+        public async Task<int> CreateEvent(NewEvent createEvent)
         {
-            // validation? MediatR!
+            // TODO: add validation
             var newEvent = new Event
             {
                 Title = createEvent.Title,
@@ -67,14 +69,20 @@ namespace EventsAPI.Services.Implementations
             };
         }
 
-        public async Task<IEnumerable<EventDateResult>> GetEventDates(bool featured)
+        public async Task<IEnumerable<EventDateResult>> GetEventDates(bool featured, int pageNumber, int pageSize)
         {
+            pageNumber = pageNumber < MIN_PAGE_NUMBER ? MIN_PAGE_NUMBER : pageNumber;
+            pageSize = pageSize < MIN_PAGE_SIZE ? MIN_PAGE_SIZE : pageSize;
+
             return await _dbContext.EventDates
                 .Where(e => e.Event.Featured == featured)
                 .OrderBy(e => e.Date)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
                 .Select(e => new EventDateResult
                 {
                     EventId = e.Event.Id,
+                    EventDateId = e.Id,
                     Title = e.Event.Title,
                     Description = e.Event.Description,
                     Image = e.Event.Image,
